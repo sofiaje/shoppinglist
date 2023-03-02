@@ -62,33 +62,38 @@ function createtheaccordions(data) {
 
 function createAccordion(list) {
     // console.log("element in accordion function", list);
-
     let accordionWrapper = document.createElement("div");
+    accordionWrapper.setAttribute("id", list._id)
     accordionWrapper.classList.add("accordionWrapper")
     accordionWrapper.innerHTML = `
     <div class="accordionHead">
-        <h2>${list.listname}</h2>
-        <i class="fa-solid fa-chevron-down"></i>
+        <div class="textwrapper"><h2>${list.listname}</h2></div>
+        <div class="btnWrapper">
+            <button class="trashBtn hiddenBtn"><i class="fa-regular fa-trash-can"></i></button>
+            <button class="toggleBtn hiddenBtn"><i class="fa-solid fa-chevron-down"></i></button>
+        </div>
     </div>
 
     <div class="accordionBody hidden">
-        <input type="text" class="listInput">
-        <button class="btn addItemBtn" id="${list._id}">Lägg till</button>
-
-        <h3 class="inProgresstitle">Köp</h3>
-        <ul class="inProgressUl">
-        </ul>
-        <h3 class="doneTitle">Klart</h3>
+        <div class="addItemWrapper">
+            <input type="text" class="listInput">
+            <button class="btn addItemBtn" id="${list._id}">Lägg till</button>
+                </div>
+            <h3 class="inProgresstitle">Kvar</h3>
+            <ul class="inProgressUl">
+            </ul>
+            <h3 class="doneTitle">Klart</h3>
         <ul class="doneUl"></ul>
     </div>`
 
     listwrapper.append(accordionWrapper);
 
-    let accordionHead = accordionWrapper.querySelector(".accordionHead")
+    let toggleBtn = accordionWrapper.querySelector(".toggleBtn")
     let accordionBody = accordionWrapper.querySelector(".accordionBody")
 
-    accordionHead.addEventListener("click", () => {
+    toggleBtn.addEventListener("click", (event) => {
         accordionBody.classList.toggle("hidden")
+        event.target.classList.toggle("turn")
     })
 
     return accordionWrapper;
@@ -174,7 +179,6 @@ async function saveNewList(listName, listId) {
 
 
 function displayItemsInAccordion(wrapper, data) {
-    wrapper.setAttribute("id", data._id)
     let inProgressUl = wrapper.querySelector(".inProgressUl")
     let doneUl = wrapper.querySelector(".doneUl")
     inProgressUl.innerHTML = ""
@@ -203,10 +207,15 @@ function eachItem(element, list, doneList) {
     <input type="checkbox" class="checkbox" ${element.checked ? "checked" : ""}>
     <button class="listDeleteBtn"><i class="fa-solid fa-xmark"></i></button>`;
 
+    let checked = 0
+    let notchecked = 0
+
     if (!element.checked) {
         list.append(li)
+        notchecked++
     } else {
         doneList.append(li)
+        checked++
 
     }
 

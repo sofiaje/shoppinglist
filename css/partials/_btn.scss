@@ -36,3 +36,14 @@ button {
     align-self: center;
 
 }
+
+.hiddenBtn {
+    padding: 0.5rem;
+    background-color: rgb(0, 0, 0, 0);
+    // background-color: gray;
+    border: none;
+    transition: all .3s ease-out;
+}
+.turn {
+    transform: rotate(-180deg);
+}

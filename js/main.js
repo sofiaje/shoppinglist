@@ -4,7 +4,14 @@ let selectMenu = document.getElementById("lists")
 let newListInput = document.getElementById("newList")
 let newListBtn = document.getElementById("newListBtn")
 
+let addItemDiv = document.getElementById("addItemDiv");
+let listDiv = document.getElementById("listDiv");
+
+
+let errorP = document.querySelector(".error");
 progressList = document.getElementById("progressList");
+
+
 
 
 
@@ -27,6 +34,7 @@ getAllListsFromAPI()
 
         listArray.forEach(element => {
             createOption(element.title, element.id)
+            createAccordion(element)
         });
     })
 
@@ -40,14 +48,43 @@ function createOption(name, id) {
 }
 
 
+function createAccordion(list) {
+    console.log("element in accordion function", list);
+
+    let accordionWrapper = document.createElement("div");
+    accordionWrapper.classList.add("accordionWrapper")
+    accordionWrapper.innerHTML = `
+    <div class="accordionHead">
+    <h2>${list.title}</h2><i class="fa-solid fa-chevron-down"></i></div>
+    <div class="accordionBody hidden">hej</div>`
+    document.body.append(accordionWrapper)
+
+    accordionWrapper.addEventListener("click", () => {
+        let accordionBody = accordionWrapper.querySelector(".accordionBody")
+        accordionBody.classList.toggle("hidden")
+    })
+}
+
+
+
+
+//------------------------------------fetch lists and append in browser -----------
+
+
 
 
 //------------------------------------add new list----------------------------------------
 
 newListBtn.addEventListener("click", () => {
     let newListInput = document.getElementById("newList")
-    createNewList(newListInput.value);
-    newListInput.value = ""
+    if (newListInput.value) {
+        errorP.classList.add("hidden")
+        createNewList(newListInput.value);
+        newListInput.value = ""
+    } else {
+        errorP.classList.remove("hidden")
+    }
+
 })
 
 
@@ -56,7 +93,7 @@ const id = "640077fe373f792f6370c015"
 
 
 
-//skapar ny lista som användaren bestämmer namn på
+//create new list from userInput
 async function createNewList(newListInput) {
     const res = await fetch(`https://nackademin-item-tracker.herokuapp.com/lists`, {
         method: "POST",
@@ -76,7 +113,6 @@ async function createNewList(newListInput) {
 
 
 //saves all new lists in my list-id list in API
-
 async function saveNewList(listName, listId) {
     const res = await fetch(
         `https://nackademin-item-tracker.herokuapp.com/lists/640077fe373f792f6370c015/items`,
@@ -103,12 +139,23 @@ async function saveNewList(listName, listId) {
 
 selectMenu.addEventListener("change", (e) => {
     progressList.innerText = ""
-    // console.log(e.target.value)
+    console.log(e.target.value)
     let userSelect = e.target.value;
-    getSpecificListFromAPI(userSelect)
-        .then((data) => {
-            displayItems(data)
-        })
+
+    if (userSelect) {
+        addItemDiv.classList.remove("hidden")
+        listDiv.classList.remove("hidden")
+        getSpecificListFromAPI(userSelect)
+            .then((data) => {
+                displayItems(data)
+            })
+    } else {
+        addItemDiv.classList.add("hidden")
+        listDiv.classList.add("hidden")
+        console.log("false")
+    }
+
+
 })
 
 
@@ -122,26 +169,20 @@ async function getSpecificListFromAPI(id) {
 
 
 function displayItems(data) {
-    console.log(data)
+    // console.log(data)
     let listTitle = document.getElementById("listTitle");
     listTitle.innerHTML = `${data.listname}`;
 
     let itemList = data.itemList;
-    console.log(itemList)
+    // console.log(itemList)
 
     itemList.forEach(element => {
-        console.log(element.title)
+        // console.log(element.title)
         let li = document.createElement("li")
         li.innerText = element.title;
         progressList.append(li)
     });
 }
-
-
-function createLiElement() {
-
-}
-
 
 
 

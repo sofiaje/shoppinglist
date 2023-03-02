@@ -5,36 +5,52 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <!-- css -->
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- fontawesome -->
+    <script src="https://kit.fontawesome.com/4d42e0c674.js" crossorigin="anonymous"></script>
+
+
 </head>
 <body>
     <div class="wrapper">
 
+        <div class="form">
+            <label for="newList"></label>
+            <input type="text" id="newList"><br>
+            <button id="newListBtn"><i class="fa-solid fa-plus"></i> Create new list</button> <br>
+            <p class="error hidden">Du måste välja ett namn</p><br>
+    
+            <br><br>
+    
+            <select name="lists" id="lists">
+                <option value="">choose list</option>
+            </select><br><br>
+    
+            <div id="addItemDiv" class="hidden">
+                
+            </div>
+
+        </div>
+
+        <div id="listDiv" class="list hidden">
+            <label for="itemName">Vad vill du lägga till?</label><br>
+            <input type="text" id="itemName"><br>
+    
+            <label for="itemQty">Hur mycket?</label><br>
+            <input type="text" id="itemQty"><br><br>
+    
+            <button class="addItemBtn">Add item</button>
 
 
-        <label for="newList">Lägg till en ny lista:</label>
-        <input type="text" id="newList">
-        <button id="newListBtn">New list</button> <br><br>
 
-        <hr><br><br>
+            <h2 id="listTitle"></h2>
+            <ul id="progressList"></ul>
+        </div>
 
-        <select name="lists" id="lists">
-            <option value="">choose list</option>
-        </select><br><br>
 
-        <label for="itemName">Vad vill du lägga till?</label><br>
-        <input type="text" id="itemName"><br>
-
-        <label for="itemQty">Hur mycket?</label><br>
-        <input type="text" id="itemQty"><br><br>
-
-        <button class="addItemBtn">Add item</button>
-
-        <h1>Inköpslista</h1>
-        <h2 id="listTitle"></h2>
-        <ul id="progressList">
-
-        </ul>
     </div>
 
     <!-- js -->

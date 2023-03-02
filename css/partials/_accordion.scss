@@ -1,5 +1,8 @@
+@import "variables";
+
+
 .accordionWrapper{
-    background: rgb(255, 255, 255);
+    background: $accordionHead;
 
     margin: 1.5rem 0;
     box-shadow: 0px 5px 10px grey;
@@ -11,24 +14,19 @@
     // background: linear-gradient(white, rgb(202, 216, 216));
     display: flex;
     justify-content: space-between;
-    background: rgb(255, 255, 255);
+    background: $accordionHead;
     border-radius: 1rem 1rem 1rem 1rem;
-    color:teal;
+    color:$accentColor;
     padding: 1rem;
     transition: background-color 0.5s;
 }
 
-.accordionHead:focus {
-    background-color: rgb(233, 233, 233);
-
-}
-
 .accordionBody {
     padding: 1rem;
-    background-color: white;
+    background-color: $accordionBody;
     color: rgb(105, 105, 105);
     font-weight: 100;
-    border-top: 2px solid rgb(202, 216, 216);
+    border-top: 2px dashed $accentLighter;
     border-radius: 0 0 1rem 1rem;
 }
 
@@ -38,9 +36,7 @@
     justify-content: space-between;
 }
 
-.addItemWrapper {
-    
-}
+
 ul {
     list-style: none;
 }

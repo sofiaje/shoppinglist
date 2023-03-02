@@ -23,6 +23,7 @@ async function getAllListsFromAPI() {
     const res = await fetch(`https://nackademin-item-tracker.herokuapp.com/lists/640077fe373f792f6370c015`);
     const data = await res.json();
 
+    console.log(data)
     return data;
 }
 
@@ -69,8 +70,8 @@ function createAccordion(list) {
     <div class="accordionHead">
         <div class="textwrapper"><h2>${list.listname}</h2></div>
         <div class="btnWrapper">
-            <button class="trashBtn hiddenBtn"><i class="fa-regular fa-trash-can"></i></button>
-            <button class="toggleBtn hiddenBtn"><i class="fa-solid fa-chevron-down"></i></button>
+            <button class="trashBtn hiddenBtn"><i class="fa-regular fa-trash-can fa-lg"></i></button>
+            <button class="toggleBtn hiddenBtn"><i class="fa-solid fa-chevron-down fa-lg"></i></button>
         </div>
     </div>
 
@@ -79,14 +80,28 @@ function createAccordion(list) {
             <input type="text" class="listInput">
             <button class="btn addItemBtn" id="${list._id}">Lägg till</button>
                 </div>
-            <h3 class="inProgresstitle">Kvar</h3>
+            <h3 class="inProgresstitle inListTitle">Kvar</h3>
             <ul class="inProgressUl">
             </ul>
-            <h3 class="doneTitle">Klart</h3>
+            <h3 class="doneTitle inListTitle">Klart</h3>
         <ul class="doneUl"></ul>
     </div>`
 
     listwrapper.append(accordionWrapper);
+
+    let trashBtn = accordionWrapper.querySelector(".trashBtn")
+    trashBtn.addEventListener("click", (e) => {
+        console.log("ta bort listan i api, sen i DOM")
+        let list = e.target.closest("div.accordionWrapper");
+        console.log(list)
+        console.log(list.id)
+        // removeListFromAPI(list.id)
+        // removeListFromIdList(list.id)
+        // findList(list.id)
+
+        // list.remove();
+    })
+
 
     let toggleBtn = accordionWrapper.querySelector(".toggleBtn")
     let accordionBody = accordionWrapper.querySelector(".accordionBody")
@@ -100,6 +115,49 @@ function createAccordion(list) {
 }
 
 
+//------------------------------------remove list-----------------------------------------------------
+
+async function removeListFromAPI(listId) {
+    const res = await fetch(
+        `https://nackademin-item-tracker.herokuapp.com/lists/${listId}`,
+        {
+            method: "DELETE",
+        }
+    );
+    const { list } = await res.json();
+}
+
+
+
+
+//------------------------------------remove list-id from id-list----------------------------------------
+
+async function removeListFromIdList(listId) {
+    console.log("tar bort item i lista")
+    const res = await fetch(
+        `https://nackademin-item-tracker.herokuapp.com/lists/640077fe373f792f6370c015/items/${listId}`,
+        {
+            method: "DELETE",
+        }
+    );
+    const { list } = await res.json();
+    console.log(list)
+}
+
+
+// -------------testa------------------------------------------------------------------------------------
+
+/* hur raderar jag ett listitem ur en lista om jag inte har dess id? 
+Kan jag få tillgång till dess id på något sätt? Utifrån namn eller ett annat id, 
+vet jag vilket index listan har? */
+
+async function findList(listId) {
+    const res = await fetch(
+        `https://nackademin-item-tracker.herokuapp.com//listsearch?listname=test`
+    );
+    const data = await res.json();
+    console.log("rad 155", data)
+}
 
 
 //------------------------------------press button to add new list----------------------------------------
@@ -224,6 +282,7 @@ function eachItem(element, list, doneList) {
         let wrapper = e.target.closest("div.accordionWrapper")
         let listId = wrapper.id
         let itemId = e.target.parentElement.id;
+
         deleteItem(listId, itemId)
             .then((data) => {
                 console.log("deletad lista ny", data)
@@ -243,18 +302,18 @@ function eachItem(element, list, doneList) {
 
         if (e.target.checked) {
             let trueorfalse = true;
-            checkItemInAPI(listId, itemId, trueorfalse)
-            .then((data) => {
-                console.log("deletad lista ny", data)
-                displayItemsInAccordion(wrapper, data)
-            })
+            checkItemInAPI(listId, itemId, e.target.checked)
+                .then((data) => {
+                    console.log("deletad lista ny", data)
+                    displayItemsInAccordion(wrapper, data)
+                })
         } else {
             let trueorfalse = false;
             checkItemInAPI(listId, itemId, trueorfalse)
-            .then((data) => {
-                console.log("deletad lista ny", data)
-                displayItemsInAccordion(wrapper, data)
-            })
+                .then((data) => {
+                    console.log("deletad lista ny", data)
+                    displayItemsInAccordion(wrapper, data)
+                })
 
         }
     })

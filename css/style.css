@@ -1,36 +1,3 @@
-body {
-  background-color: rgb(217, 217, 217);
-  color: white;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-h1, h2, h3, h4, h5 {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
-
-h3 {
-  font-weight: 100;
-}
-
-ul {
-  list-style: none;
-}
-
-.wrapper {
-  padding: 0.5rem;
-  max-width: 700px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-}
-
 .btn {
   cursor: pointer;
   padding: 0.5rem 1.5rem;
@@ -58,6 +25,88 @@ ul {
   background-color: rgb(220, 220, 220);
 }
 
+#newListBtn {
+  padding: 1 rem 2rem;
+  font-size: 1.2rem;
+  font-weight: 200;
+  align-self: center;
+}
+
+.accordionWrapper {
+  margin: 1.5rem 0;
+  box-shadow: 5px 5px 10px grey;
+  max-width: 700px;
+  border-radius: 1rem 1rem 1rem 1rem;
+}
+
+.accordionHead {
+  background-color: rgb(255, 255, 255);
+  border-radius: 1rem 1rem 0 0;
+  color: teal;
+  padding: 1rem;
+  cursor: pointer;
+  transition: background-color 0.5s;
+}
+
+.accordionHead:hover {
+  background-color: rgb(233, 233, 233);
+}
+
+.accordionBody {
+  padding: 1rem;
+  background-color: white;
+  color: teal;
+  border-top: 2px solid rgb(202, 216, 216);
+  border-radius: 0 0 1rem 1rem;
+}
+
+ul {
+  list-style: none;
+}
+
+.liHtmlElement {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem;
+}
+
+.item {
+  flex-grow: 1;
+}
+
+body {
+  background-color: rgb(217, 217, 217);
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+h3 {
+  font-weight: 100;
+}
+
+.fa-xmark {
+  pointer-events: none;
+}
+
+.wrapper {
+  padding: 0.5rem;
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
 .form {
   display: flex;
   flex-direction: column;
@@ -66,7 +115,7 @@ ul {
 .checkbox {
   height: 20px;
   width: 20px;
-  accent-color: rgb(60, 112, 112);
+  accent-color: rgb(95, 143, 143);
 }
 
 input {
@@ -82,50 +131,8 @@ input {
   padding: 1rem;
 }
 
-#newListBtn {
-  padding: 1 rem 2rem;
-  font-size: 1.2rem;
-  font-weight: 100;
-  align-self: center;
-}
-
 .hidden {
   display: none;
-}
-
-.accordionWrapper {
-  margin: 1rem 0;
-  box-shadow: 5px 5px 10px grey;
-  max-width: 700px;
-}
-
-.accordionHead {
-  background-color: rgb(255, 255, 255);
-  color: teal;
-  padding: 1rem;
-  cursor: pointer;
-  transition: background-color 0.5s;
-}
-
-.accordionHead:hover {
-  background-color: rgb(202, 216, 216);
-}
-
-.accordionBody {
-  padding: 1rem;
-  background-color: white;
-  color: teal;
-  border-top: 2px solid rgb(202, 216, 216);
-}
-
-.liHtmlElement {
-  display: flex;
-  justify-content: space-between;
-  margin: 0.5rem;
-}
-
-.item {
-  flex-grow: 1;
 }
 
 .error {

@@ -174,11 +174,12 @@ async function saveNewList(listName, listId) {
 
 
 function displayItemsInAccordion(wrapper, data) {
-    console.log("rad 131", data)
+    // console.log("rad 131", data)
     let inProgressUl = wrapper.querySelector(".inProgressUl")
+    let doneUl = wrapper.querySelector(".doneUl")
     inProgressUl.innerHTML = ""
+    doneUl.innerHTML = ""
     // console.log(inProgressUl)
-    // let doneUl = wrapper.querySelector(".doneUl")
     // let inProgresstitle = wrapper.querySelector(".inProgressUl")
     // let doneTitle = wrapper.querySelector(".inProgressUl")
 
@@ -186,17 +187,28 @@ function displayItemsInAccordion(wrapper, data) {
     let itemList = data.itemList
 
     itemList.forEach(element => {
-        eachItem(element, inProgressUl)
+        eachItem(element, inProgressUl, doneUl)
     });
 
 }
 
 
-function eachItem(element, list) {
+function eachItem(element, list, doneList) {
+    // console.log("rad 197", element)
     let li = document.createElement("li")
     li.classList.add("liHtmlElement")
     li.innerHTML = `<div class="item">${element.title}</div> <input type="checkbox" class="checkbox"><button class="listDeleteBtn"><i class="fa-solid fa-xmark"></i></button>`;
-    list.append(li)
+    if (!element.checked) {
+        list.append(li)
+    } else {
+        doneList.append(li)
+    }
+
+    let listDeleteBtn = li.querySelector(".listDeleteBtn");
+    listDeleteBtn.addEventListener("click", (e) => {
+        console.log("hej", e.target)
+    })
+
 }
 
 
@@ -227,23 +239,28 @@ function addNewItem(wrapper) {
     addItemBtn.addEventListener("click", () => {
         // console.log("du klickade på knappen");
         let listInput = wrapper.querySelector(".listInput");
-        let listId = addItemBtn.id;
-        let title = listInput.value
-        addItemInAPI(listId, title)
-            .then((data) => {
-                // eachItem(, list)
-                console.log(data)
-                displayItemsInAccordion(wrapper, data)
-                // displayItemsInAccordion()
 
-            })
+        if (listInput.value) {
+            let listId = addItemBtn.id;
+            let title = listInput.value
+            addItemInAPI(listId, title)
+                .then((data) => {
+                    console.log(data)
+                    displayItemsInAccordion(wrapper, data)
 
-        listInput.value = ""
+                })
+            listInput.value = ""
+        } else {
+            console.log("false")
+        }
+
 
     })
 
 }
 
+
+//add an item in API list
 async function addItemInAPI(currentListId, title) {
     const res = await fetch(
         `https://nackademin-item-tracker.herokuapp.com/lists/${currentListId}/items`,
@@ -255,6 +272,7 @@ async function addItemInAPI(currentListId, title) {
             body: JSON.stringify({
                 title: title,
                 qty: 1,
+                checked: false
             }),
         }
     );

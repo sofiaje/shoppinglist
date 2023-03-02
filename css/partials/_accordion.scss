@@ -1,0 +1,41 @@
+.accordionWrapper{
+    margin: 1.5rem 0;
+    box-shadow: 5px 5px 10px grey;
+    max-width: 700px;
+    border-radius: 1rem 1rem 1rem 1rem;
+}
+
+.accordionHead {
+    background-color: rgb(255, 255, 255);
+    border-radius: 1rem 1rem 0 0;
+    color:teal;
+    padding: 1rem;
+    cursor: pointer;
+    transition: background-color 0.5s;
+}
+
+.accordionHead:hover {
+    background-color: rgb(233, 233, 233);
+}
+
+.accordionBody {
+    padding: 1rem;
+    background-color: white;
+    color: teal;
+    border-top: 2px solid rgb(202, 216, 216);
+    border-radius: 0 0 1rem 1rem;
+}
+
+ul {
+    list-style: none;
+}
+
+.liHtmlElement {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem;
+}
+
+.item {
+    flex-grow: 1;
+}

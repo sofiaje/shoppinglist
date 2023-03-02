@@ -1,6 +1,17 @@
-//------------------------------------hämta listor och lägg till i select meny-----------
+//------------------------------------global--------------------------------------------
 
-async function getMyListsFromAPI() {
+let selectMenu = document.getElementById("lists")
+let newListInput = document.getElementById("newList")
+let newListBtn = document.getElementById("newListBtn")
+
+progressList = document.getElementById("progressList");
+
+
+
+
+//------------------------------------fetch lists and append in select menu -----------
+
+async function getAllListsFromAPI() {
     const res = await fetch(`https://nackademin-item-tracker.herokuapp.com/lists/640077fe373f792f6370c015`);
     const data = await res.json();
 
@@ -8,34 +19,35 @@ async function getMyListsFromAPI() {
 }
 
 
-getMyListsFromAPI()
+getAllListsFromAPI()
     .then((data) => {
-        
+
         let listArray = data.itemList
         console.log(listArray)
+
         listArray.forEach(element => {
             createOption(element.title, element.id)
         });
-})
+    })
+
 
 
 function createOption(name, id) {
-    let select = document.getElementById("lists")
     let option = document.createElement("option")
     option.innerText = name
     option.value = id
-    select.append(option)
+    selectMenu.append(option)
 }
 
 
-//------------------------------------lägg till ny lista------------------------------------
 
 
-let newListInput = document.getElementById("newList")
-let newListBtn = document.getElementById("newListBtn")
+//------------------------------------add new list----------------------------------------
 
 newListBtn.addEventListener("click", () => {
-    createNewList();
+    let newListInput = document.getElementById("newList")
+    createNewList(newListInput.value);
+    newListInput.value = ""
 })
 
 
@@ -43,9 +55,9 @@ newListBtn.addEventListener("click", () => {
 const id = "640077fe373f792f6370c015"
 
 
+
 //skapar ny lista som användaren bestämmer namn på
-async function createNewList() {
-    let newListInput = document.getElementById("newList").value
+async function createNewList(newListInput) {
     const res = await fetch(`https://nackademin-item-tracker.herokuapp.com/lists`, {
         method: "POST",
         headers: {
@@ -63,7 +75,8 @@ async function createNewList() {
 
 
 
-//sparar alla nya listor i min lista med listid
+//saves all new lists in my list-id list in API
+
 async function saveNewList(listName, listId) {
     const res = await fetch(
         `https://nackademin-item-tracker.herokuapp.com/lists/640077fe373f792f6370c015/items`,
@@ -85,7 +98,56 @@ async function saveNewList(listName, listId) {
 
 
 
-//------------------------------------lägg till items------------------------------------
+
+//------------------------------------choose list in select menu and display in browser--------------
+
+selectMenu.addEventListener("change", (e) => {
+    progressList.innerText = ""
+    // console.log(e.target.value)
+    let userSelect = e.target.value;
+    getSpecificListFromAPI(userSelect)
+        .then((data) => {
+            displayItems(data)
+        })
+})
+
+
+
+async function getSpecificListFromAPI(id) {
+    const res = await fetch(`https://nackademin-item-tracker.herokuapp.com/lists/${id}`);
+    const data = await res.json();
+
+    return data;
+}
+
+
+function displayItems(data) {
+    console.log(data)
+    let listTitle = document.getElementById("listTitle");
+    listTitle.innerHTML = `${data.listname}`;
+
+    let itemList = data.itemList;
+    console.log(itemList)
+
+    itemList.forEach(element => {
+        console.log(element.title)
+        let li = document.createElement("li")
+        li.innerText = element.title;
+        progressList.append(li)
+    });
+}
+
+
+function createLiElement() {
+
+}
+
+
+
+
+
+
+//------------------------------------add new item------------------------------------------
 
 class listItem {
     constructor(name, qty) {

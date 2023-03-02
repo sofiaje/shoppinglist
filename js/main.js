@@ -73,12 +73,12 @@ function createAccordion(list) {
 
     <div class="accordionBody hidden">
         <input type="text" class="listInput">
-        <button class="btn addItemBtn" id="${list._id}">add item</button>
+        <button class="btn addItemBtn" id="${list._id}">Lägg till</button>
 
-        <h3 class="inProgresstitle">In progress</h3>
+        <h3 class="inProgresstitle">Köp</h3>
         <ul class="inProgressUl">
         </ul>
-        <h3 class="doneTitle">done</h3>
+        <h3 class="doneTitle">Klart</h3>
         <ul class="doneUl"></ul>
     </div>`
 
@@ -174,7 +174,8 @@ async function saveNewList(listName, listId) {
 
 
 function displayItemsInAccordion(wrapper, data) {
-    // console.log("rad 131", data)
+    wrapper.setAttribute("id", data._id)
+    console.log(data)
     let inProgressUl = wrapper.querySelector(".inProgressUl")
     let doneUl = wrapper.querySelector(".doneUl")
     inProgressUl.innerHTML = ""
@@ -193,21 +194,38 @@ function displayItemsInAccordion(wrapper, data) {
 }
 
 
+
 function eachItem(element, list, doneList) {
     // console.log("rad 197", element)
     let li = document.createElement("li")
     li.classList.add("liHtmlElement")
-    li.innerHTML = `<div class="item">${element.title}</div> <input type="checkbox" class="checkbox"><button class="listDeleteBtn"><i class="fa-solid fa-xmark"></i></button>`;
+    li.setAttribute("id", element._id)
+    li.innerHTML = `<div class="item">${element.title}</div> 
+    <input type="checkbox" class="checkbox">
+    <button class="listDeleteBtn"><i class="fa-solid fa-xmark"></i></button>`;
+
     if (!element.checked) {
         list.append(li)
     } else {
         doneList.append(li)
+
     }
 
     let listDeleteBtn = li.querySelector(".listDeleteBtn");
     listDeleteBtn.addEventListener("click", (e) => {
-        console.log("hej", e.target)
+        let wrapper = e.target.closest("div.accordionWrapper")
+        let listId = wrapper.id
+        let itemId = e.target.parentElement.id;
+        deleteItem(listId, itemId)
+            .then((data) => {
+                console.log("deletad lista ny", data)
+                displayItemsInAccordion(wrapper, data)
+
+            })
     })
+
+    let checkbox = li.querySelector(".checkbox");
+    // console.log(checkbox.checked)
 
 }
 
@@ -223,8 +241,36 @@ async function getSpecificListFromAPI(id) {
 
 
 
+//-----------------------------------check item in list-------------------------------------------
+
+async function checkItemInAPI(listId) {
+    const res = await fetch(`https://nackademin-item-tracker.herokuapp.com/lists/${listId}/items/${itemId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            checked: true,
+        }),
+    });
+    const { list } = await res.json();
+    return list
+
+}
 
 
+
+//-----------------------------------delete item from list-------------------------------------------
+async function deleteItem(listId, itemId) {
+    const res = await fetch(
+        `https://nackademin-item-tracker.herokuapp.com/lists/${listId}/items/${itemId}`,
+        {
+            method: "DELETE",
+        }
+    );
+    const { list } = await res.json();
+    return list
+}
 
 
 

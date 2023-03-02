@@ -1,15 +1,18 @@
 body {
-    background-color: rgb(172, 184, 184);
+    background-color: rgb(217, 217, 217);
     color: white;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-// * {
-//     margin: 0;
-//     padding: 0;
-//     box-sizing: border-box;
-// }
-
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+h1,h2,h3,h4,h5 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
 h3 {
     font-weight: 100;
 }
@@ -18,16 +21,13 @@ ul {
     list-style: none;
 }
 .wrapper {
-    padding:1rem;
+    padding:0.5rem;
     max-width: 700px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
 }
 
-select {
-    min-width: 150px;
-}
 
 .btn {
     cursor: pointer;
@@ -42,6 +42,31 @@ select {
     background-color: rgb(0, 83, 83);
 
 }
+
+.listDeleteBtn{
+    background-color: rgb(236, 236, 236);
+    border: none;
+    padding: 0.4rem 0.4rem;
+    margin-left: 1rem;
+    border-radius: 4px;
+    align-self: center;
+}
+.listDeleteBtn:hover {
+    background-color: rgb(220, 220, 220);
+    
+}
+.form {
+    display:flex;
+    flex-direction: column;
+
+}
+
+.checkbox {
+    height: 20px;
+    width: 20px;
+    accent-color: rgb(60, 112, 112);
+}
+
 input {
     padding: 0.5rem 1rem;
     border: 1px solid teal;
@@ -50,33 +75,31 @@ input {
     margin-right: 0.5rem;
 
 }
-
-select {
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    border: none;
-    color: black;
-    min-width: 150px;
-    min-height: 15px;
-}
-.list {
-    border: 1px solid white;
+#newList {
+    width: 100%;
     padding: 1rem;
-    margin: 1rem 0;
-    max-width: 500px;
 }
+#newListBtn {
+    padding: 1 rem 2rem;
+    font-size: 1.2rem;
+    font-weight: 100;
+    align-self: center;
+
+}
+
 
 .hidden {
     display: none;
 }
 
 .accordionWrapper{
-    margin: 0.5rem;
+    margin: 1rem 0;
     box-shadow: 5px 5px 10px grey;
+    max-width: 700px;
 }
 
 .accordionHead {
-    background-color: rgb(227, 236, 236);
+    background-color: rgb(255, 255, 255);
     // border-radius: 1rem 1rem 0 0;
     color:teal;
     padding: 1rem;
@@ -92,14 +115,22 @@ select {
     padding: 1rem;
     background-color: white;
     color: teal;
+    border-top: 2px solid rgb(202, 216, 216);
+
 }
 
 
 .liHtmlElement {
     display: flex;
     justify-content: space-between;
+    margin: 0.5rem;
 }
 
 .item {
     flex-grow: 1;
+}
+
+.error {
+    color:rgb(0, 83, 83);
+    font-style: italic;
 }

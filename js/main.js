@@ -1,4 +1,6 @@
 //------------------------------------global--------------------------------------------
+let listwrapper = document.querySelector("#listwrapper")
+
 
 let selectMenu = document.getElementById("lists")
 let newListInput = document.getElementById("newList")
@@ -25,31 +27,72 @@ async function getAllListsFromAPI() {
 }
 
 
-
-
 //calls function that gets the list-id list
 getAllListsFromAPI()
     .then((data) => {
+        // console.log("data from api, id-list objectet", data)
+        // console.log("listArray, listan med id + namn", listArray)
+        createtheaccordions(data)
 
-        let listArray = data.itemList
-        console.log("data from api, id-list objectet", data)
-        console.log("listArray, listan med id + namn", listArray)
-
-        listArray.forEach(element => {
-            //calls function that creates option in select menu
-            // createOption(element.title, element.id)
-
-            getSpecificListFromAPI(element.id)
-                .then((data) => {
-                    console.log("rad 40", data)
-                    let wrapper = createAccordion(data)
-                    displayItemsInAccordion(wrapper, data)
-                    addNewItem(wrapper)
-                })
-        });
     })
 
 
+function createtheaccordions(data) {
+    let listArray = data.itemList
+    listArray.forEach(element => {
+        //calls function that creates option in select menu
+        // createOption(element.title, element.id)
+
+        listwrapper.innerHTML = ""
+        getSpecificListFromAPI(element.id)
+            .then((data) => {
+                // console.log("rad 40", data)
+                let wrapper = createAccordion(data)
+                displayItemsInAccordion(wrapper, data)
+                addNewItem(wrapper)
+            })
+    });
+}
+
+
+
+
+//------------------------------------fetch lists and append accordion in browser -----------
+
+
+function createAccordion(list) {
+    // console.log("element in accordion function", list);
+
+    let accordionWrapper = document.createElement("div");
+    accordionWrapper.classList.add("accordionWrapper")
+    accordionWrapper.innerHTML = `
+    <div class="accordionHead">
+        <h2>${list.listname}</h2>
+        <i class="fa-solid fa-chevron-down"></i>
+    </div>
+
+    <div class="accordionBody hidden">
+        <input type="text" class="listInput">
+        <button class="btn addItemBtn" id="${list._id}">add item</button>
+
+        <h3 class="inProgresstitle">In progress</h3>
+        <ul class="inProgressUl">
+        </ul>
+        <h3 class="doneTitle">done</h3>
+        <ul class="doneUl"></ul>
+    </div>`
+
+    listwrapper.append(accordionWrapper);
+
+    let accordionHead = accordionWrapper.querySelector(".accordionHead")
+    let accordionBody = accordionWrapper.querySelector(".accordionBody")
+
+    accordionHead.addEventListener("click", () => {
+        accordionBody.classList.toggle("hidden")
+    })
+
+    return accordionWrapper;
+}
 
 
 
@@ -94,8 +137,11 @@ async function createNewList(newListInput) {
     //anropar funktion som sparar den nya listans ID i id-listan på API
     saveNewList(list.listname, list._id)
 
-    //skapar ett option i selectmeny så att man kan välja den nya listan
-    // createOption(list.listname, list._id)
+    //renderar ut ny lista i browser
+    let wrapper = createAccordion(list)
+    displayItemsInAccordion(wrapper, list)
+    addNewItem(wrapper)
+
 }
 
 
@@ -128,14 +174,15 @@ async function saveNewList(listName, listId) {
 
 
 function displayItemsInAccordion(wrapper, data) {
-
+    console.log("rad 131", data)
     let inProgressUl = wrapper.querySelector(".inProgressUl")
-    console.log(inProgressUl)
+    inProgressUl.innerHTML = ""
+    // console.log(inProgressUl)
     // let doneUl = wrapper.querySelector(".doneUl")
     // let inProgresstitle = wrapper.querySelector(".inProgressUl")
     // let doneTitle = wrapper.querySelector(".inProgressUl")
 
-    console.log("data rad 72", data.itemList)
+    // console.log("data rad 72", data.itemList)
     let itemList = data.itemList
 
     itemList.forEach(element => {
@@ -148,7 +195,7 @@ function displayItemsInAccordion(wrapper, data) {
 function eachItem(element, list) {
     let li = document.createElement("li")
     li.classList.add("liHtmlElement")
-    li.innerHTML = `<div class="item">${element.title}</div> <input type="checkbox"><button>delete</button>`;
+    li.innerHTML = `<div class="item">${element.title}</div> <input type="checkbox" class="checkbox"><button class="listDeleteBtn"><i class="fa-solid fa-xmark"></i></button>`;
     list.append(li)
 }
 
@@ -166,43 +213,6 @@ async function getSpecificListFromAPI(id) {
 
 
 
-//------------------------------------fetch lists and append accordion in browser -----------
-
-
-function createAccordion(list) {
-    // console.log("element in accordion function", list);
-
-    let accordionWrapper = document.createElement("div");
-    accordionWrapper.classList.add("accordionWrapper")
-    accordionWrapper.innerHTML = `
-    <div class="accordionHead">
-        <h2>${list.listname}</h2>
-        <i class="fa-solid fa-chevron-down"></i>
-    </div>
-
-    <div class="accordionBody hidden">
-        <input type="text" class="listInput">
-        <button class="btn addItemBtn" id="${list._id}">add item</button>
-
-        <h3 class="inProgresstitle">In progress</h3>
-        <ul class="inProgressUl">
-        </ul>
-        <h3 class="doneTitle">done</h3>
-        <ul class="doneUl"></ul>
-    </div>`
-
-    document.body.append(accordionWrapper);
-
-    let accordionHead = accordionWrapper.querySelector(".accordionHead")
-    let accordionBody = accordionWrapper.querySelector(".accordionBody")
-
-    accordionHead.addEventListener("click", () => {
-        accordionBody.classList.toggle("hidden")
-    })
-
-    return accordionWrapper;
-}
-
 
 
 
@@ -212,14 +222,21 @@ function createAccordion(list) {
 function addNewItem(wrapper) {
     let addItemBtn = wrapper.querySelector(".addItemBtn");
     let inProgressUl = wrapper.querySelector(".inProgressUl");
-    console.log(addItemBtn, inProgressUl)
+    // console.log(addItemBtn, inProgressUl)
 
     addItemBtn.addEventListener("click", () => {
-        console.log("du klickade på knappen", addItemBtn);
+        // console.log("du klickade på knappen");
         let listInput = wrapper.querySelector(".listInput");
         let listId = addItemBtn.id;
         let title = listInput.value
         addItemInAPI(listId, title)
+            .then((data) => {
+                // eachItem(, list)
+                console.log(data)
+                displayItemsInAccordion(wrapper, data)
+                // displayItemsInAccordion()
+
+            })
 
         listInput.value = ""
 
@@ -242,6 +259,7 @@ async function addItemInAPI(currentListId, title) {
         }
     );
     const { list } = await res.json();
+    return list;
 }
 
 

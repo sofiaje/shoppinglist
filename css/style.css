@@ -39,4 +39,7 @@ select {
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   border: none;
+  color: black;
+  min-width: 150px;
+  min-height: 15px;
 }/*# sourceMappingURL=style.css.map */

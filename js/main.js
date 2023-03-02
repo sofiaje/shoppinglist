@@ -15,8 +15,7 @@ progressList = document.getElementById("progressList");
 
 
 
-
-//------------------------------------fetch lists and append in select menu -----------
+//------------------------------------fetch all lists from api -------------------------
 
 async function getAllListsFromAPI() {
     const res = await fetch(`https://nackademin-item-tracker.herokuapp.com/lists/640077fe373f792f6370c015`);
@@ -26,55 +25,40 @@ async function getAllListsFromAPI() {
 }
 
 
+
+
+//calls function that gets the list-id list
 getAllListsFromAPI()
     .then((data) => {
 
         let listArray = data.itemList
-        console.log(listArray)
+        console.log("data from api, id-list objectet", data)
+        console.log("listArray, listan med id + namn", listArray)
 
         listArray.forEach(element => {
-            createOption(element.title, element.id)
-            createAccordion(element)
+            //calls function that creates option in select menu
+            // createOption(element.title, element.id)
+
+            getSpecificListFromAPI(element.id)
+                .then((data) => {
+                    console.log("rad 40", data)
+                    let wrapper = createAccordion(data)
+                    displayItemsInAccordion(wrapper, data)
+                    addNewItem(wrapper)
+                })
         });
     })
 
 
 
-function createOption(name, id) {
-    let option = document.createElement("option")
-    option.innerText = name
-    option.value = id
-    selectMenu.append(option)
-}
-
-
-function createAccordion(list) {
-    console.log("element in accordion function", list);
-
-    let accordionWrapper = document.createElement("div");
-    accordionWrapper.classList.add("accordionWrapper")
-    accordionWrapper.innerHTML = `
-    <div class="accordionHead">
-    <h2>${list.title}</h2><i class="fa-solid fa-chevron-down"></i></div>
-    <div class="accordionBody hidden">hej</div>`
-    document.body.append(accordionWrapper)
-
-    accordionWrapper.addEventListener("click", () => {
-        let accordionBody = accordionWrapper.querySelector(".accordionBody")
-        accordionBody.classList.toggle("hidden")
-    })
-}
 
 
 
-
-//------------------------------------fetch lists and append in browser -----------
-
+//------------------------------------press button to add new list----------------------------------------
 
 
-
-//------------------------------------add new list----------------------------------------
-
+//kollar om användaren skrivit in ett listnamn när hen trycker på skapa-lista-knappen  
+//anropar isåfall funktion som skapar lista i API 
 newListBtn.addEventListener("click", () => {
     let newListInput = document.getElementById("newList")
     if (newListInput.value) {
@@ -93,7 +77,7 @@ const id = "640077fe373f792f6370c015"
 
 
 
-//create new list from userInput
+//create new list in API from userInput
 async function createNewList(newListInput) {
     const res = await fetch(`https://nackademin-item-tracker.herokuapp.com/lists`, {
         method: "POST",
@@ -106,9 +90,14 @@ async function createNewList(newListInput) {
     });
     const { list } = await res.json();
 
+
+    //anropar funktion som sparar den nya listans ID i id-listan på API
     saveNewList(list.listname, list._id)
-    createOption(list.listname, list._id)
+
+    //skapar ett option i selectmeny så att man kan välja den nya listan
+    // createOption(list.listname, list._id)
 }
+
 
 
 
@@ -135,31 +124,37 @@ async function saveNewList(listName, listId) {
 
 
 
-//------------------------------------choose list in select menu and display in browser--------------
-
-selectMenu.addEventListener("change", (e) => {
-    progressList.innerText = ""
-    console.log(e.target.value)
-    let userSelect = e.target.value;
-
-    if (userSelect) {
-        addItemDiv.classList.remove("hidden")
-        listDiv.classList.remove("hidden")
-        getSpecificListFromAPI(userSelect)
-            .then((data) => {
-                displayItems(data)
-            })
-    } else {
-        addItemDiv.classList.add("hidden")
-        listDiv.classList.add("hidden")
-        console.log("false")
-    }
+//--------------------------------------display saved lists in browser as accordions-----------------------
 
 
-})
+function displayItemsInAccordion(wrapper, data) {
+
+    let inProgressUl = wrapper.querySelector(".inProgressUl")
+    console.log(inProgressUl)
+    // let doneUl = wrapper.querySelector(".doneUl")
+    // let inProgresstitle = wrapper.querySelector(".inProgressUl")
+    // let doneTitle = wrapper.querySelector(".inProgressUl")
+
+    console.log("data rad 72", data.itemList)
+    let itemList = data.itemList
+
+    itemList.forEach(element => {
+        eachItem(element, inProgressUl)
+    });
+
+}
+
+
+function eachItem(element, list) {
+    let li = document.createElement("li")
+    li.classList.add("liHtmlElement")
+    li.innerHTML = `<div class="item">${element.title}</div> <input type="checkbox"><button>delete</button>`;
+    list.append(li)
+}
 
 
 
+//fetch specific list from API by ID
 async function getSpecificListFromAPI(id) {
     const res = await fetch(`https://nackademin-item-tracker.herokuapp.com/lists/${id}`);
     const data = await res.json();
@@ -168,27 +163,91 @@ async function getSpecificListFromAPI(id) {
 }
 
 
-function displayItems(data) {
-    // console.log(data)
-    let listTitle = document.getElementById("listTitle");
-    listTitle.innerHTML = `${data.listname}`;
 
-    let itemList = data.itemList;
-    // console.log(itemList)
 
-    itemList.forEach(element => {
-        // console.log(element.title)
-        let li = document.createElement("li")
-        li.innerText = element.title;
-        progressList.append(li)
-    });
+
+//------------------------------------fetch lists and append accordion in browser -----------
+
+
+function createAccordion(list) {
+    // console.log("element in accordion function", list);
+
+    let accordionWrapper = document.createElement("div");
+    accordionWrapper.classList.add("accordionWrapper")
+    accordionWrapper.innerHTML = `
+    <div class="accordionHead">
+        <h2>${list.listname}</h2>
+        <i class="fa-solid fa-chevron-down"></i>
+    </div>
+
+    <div class="accordionBody hidden">
+        <input type="text" class="listInput">
+        <button class="btn addItemBtn" id="${list._id}">add item</button>
+
+        <h3 class="inProgresstitle">In progress</h3>
+        <ul class="inProgressUl">
+        </ul>
+        <h3 class="doneTitle">done</h3>
+        <ul class="doneUl"></ul>
+    </div>`
+
+    document.body.append(accordionWrapper);
+
+    let accordionHead = accordionWrapper.querySelector(".accordionHead")
+    let accordionBody = accordionWrapper.querySelector(".accordionBody")
+
+    accordionHead.addEventListener("click", () => {
+        accordionBody.classList.toggle("hidden")
+    })
+
+    return accordionWrapper;
 }
 
 
 
 
 
-//------------------------------------add new item------------------------------------------
+//------------------------------------add new item to list-------------------------------------------
+
+function addNewItem(wrapper) {
+    let addItemBtn = wrapper.querySelector(".addItemBtn");
+    let inProgressUl = wrapper.querySelector(".inProgressUl");
+    console.log(addItemBtn, inProgressUl)
+
+    addItemBtn.addEventListener("click", () => {
+        console.log("du klickade på knappen", addItemBtn);
+        let listInput = wrapper.querySelector(".listInput");
+        let listId = addItemBtn.id;
+        let title = listInput.value
+        addItemInAPI(listId, title)
+
+        listInput.value = ""
+
+    })
+
+}
+
+async function addItemInAPI(currentListId, title) {
+    const res = await fetch(
+        `https://nackademin-item-tracker.herokuapp.com/lists/${currentListId}/items`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                title: title,
+                qty: 1,
+            }),
+        }
+    );
+    const { list } = await res.json();
+}
+
+
+
+
+//------------------------------------add new item prototype------------------------------------------
 
 class listItem {
     constructor(name, qty) {
@@ -201,18 +260,18 @@ class listItem {
 
 
 
-let itemListArray = []
-const addItemBtn = document.querySelector(".addItemBtn")
+// let itemListArray = []
+// const addItemBtn = document.querySelector(".addItemBtn")
 
-addItemBtn.addEventListener("click", () => {
-    let name = document.getElementById("itemName")
-    let qty = document.getElementById("itemQty")
+// addItemBtn.addEventListener("click", () => {
+//     let name = document.getElementById("itemName")
+//     let qty = document.getElementById("itemQty")
 
-    let item = new listItem(name.value, qty.value)
+//     let item = new listItem(name.value, qty.value)
 
-    itemListArray.push(item)
-    console.log(itemListArray)
+//     itemListArray.push(item)
+//     console.log(itemListArray)
 
-    name.value = ""
-    qty.value = ""
-})
+//     name.value = ""
+//     qty.value = ""
+// })

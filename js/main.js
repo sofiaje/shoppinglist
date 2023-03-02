@@ -175,7 +175,6 @@ async function saveNewList(listName, listId) {
 
 function displayItemsInAccordion(wrapper, data) {
     wrapper.setAttribute("id", data._id)
-    console.log(data)
     let inProgressUl = wrapper.querySelector(".inProgressUl")
     let doneUl = wrapper.querySelector(".doneUl")
     inProgressUl.innerHTML = ""
@@ -201,7 +200,7 @@ function eachItem(element, list, doneList) {
     li.classList.add("liHtmlElement")
     li.setAttribute("id", element._id)
     li.innerHTML = `<div class="item">${element.title}</div> 
-    <input type="checkbox" class="checkbox">
+    <input type="checkbox" class="checkbox" ${element.checked ? "checked" : ""}>
     <button class="listDeleteBtn"><i class="fa-solid fa-xmark"></i></button>`;
 
     if (!element.checked) {
@@ -220,12 +219,36 @@ function eachItem(element, list, doneList) {
             .then((data) => {
                 console.log("deletad lista ny", data)
                 displayItemsInAccordion(wrapper, data)
-
             })
     })
 
     let checkbox = li.querySelector(".checkbox");
-    // console.log(checkbox.checked)
+    checkbox.addEventListener("change", (e) => {
+        // console.log("e target", e.target);
+
+
+        let wrapper = e.target.closest("div.accordionWrapper")
+        let listId = wrapper.id;
+        let itemId = e.target.parentElement.id;
+        // console.log(listId, itemId)
+
+        if (e.target.checked) {
+            let trueorfalse = true;
+            checkItemInAPI(listId, itemId, trueorfalse)
+            .then((data) => {
+                console.log("deletad lista ny", data)
+                displayItemsInAccordion(wrapper, data)
+            })
+        } else {
+            let trueorfalse = false;
+            checkItemInAPI(listId, itemId, trueorfalse)
+            .then((data) => {
+                console.log("deletad lista ny", data)
+                displayItemsInAccordion(wrapper, data)
+            })
+
+        }
+    })
 
 }
 
@@ -243,14 +266,14 @@ async function getSpecificListFromAPI(id) {
 
 //-----------------------------------check item in list-------------------------------------------
 
-async function checkItemInAPI(listId) {
+async function checkItemInAPI(listId, itemId, trueorfalse) {
     const res = await fetch(`https://nackademin-item-tracker.herokuapp.com/lists/${listId}/items/${itemId}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            checked: true,
+            checked: trueorfalse,
         }),
     });
     const { list } = await res.json();

@@ -29,9 +29,14 @@ button {
 }
 
 .listDeleteBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: $gray-100;
     border: none;
-    padding: 0.4rem 0.4rem;
+    height: 26px;
+    width: 26px;
+    // padding: 0.4rem 0.4rem;
     margin-left: 1rem;
     border-radius: 4px;
     align-self: center;

@@ -24,9 +24,13 @@ button {
 }
 
 .listDeleteBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: rgb(235, 235, 235);
   border: none;
-  padding: 0.4rem 0.4rem;
+  height: 26px;
+  width: 26px;
   margin-left: 1rem;
   border-radius: 4px;
   align-self: center;
@@ -119,6 +123,8 @@ ul {
 
 .liHtmlElement {
   display: flex;
+  font-size: 1.1rem;
+  font-weight: 100;
   justify-content: space-between;
   margin: 0.2rem;
 }
@@ -162,6 +168,30 @@ h2 {
   font-size: small;
 }
 
+.form {
+  margin: 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.checkbox {
+  height: 24px;
+  width: 24px;
+  accent-color: rgb(54, 134, 84);
+}
+
+input {
+  padding: 0.5rem 1rem;
+  border: 1px solid teal;
+  border-radius: 1rem;
+  margin: 0.5rem 0;
+  margin-right: 0.5rem;
+}
+
+.listInput {
+  padding: 0.6rem 1rem;
+}
+
 body {
   background-color: rgb(233, 233, 233);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -179,30 +209,6 @@ body {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-}
-
-.form {
-  margin: 0.5rem;
-  display: flex;
-  flex-direction: column;
-}
-
-.checkbox {
-  height: 20px;
-  width: 20px;
-  accent-color: rgb(54, 134, 84);
-}
-
-input {
-  padding: 0.5rem 1rem;
-  border: 1px solid teal;
-  border-radius: 1rem;
-  margin: 0.5rem 0;
-  margin-right: 0.5rem;
-}
-
-.listInput {
-  padding: 0.6rem 1rem;
 }
 
 #newList {

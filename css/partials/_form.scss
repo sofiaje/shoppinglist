@@ -1,0 +1,22 @@
+.form {
+    margin: 0.5rem;
+    display:flex;
+    flex-direction: column;
+}
+
+.checkbox {
+    height: 24px;
+    width: 24px;
+    accent-color: rgb(54, 134, 84);
+}
+
+input {
+    padding: 0.5rem 1rem;
+    border: 1px solid teal;
+    border-radius: 1rem;
+    margin: 0.5rem 0;
+    margin-right: 0.5rem;
+}
+.listInput {
+    padding: 0.6rem 1rem;
+}

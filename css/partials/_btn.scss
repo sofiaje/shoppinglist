@@ -6,11 +6,6 @@ button {
     color: black;
     font-family: 'Oswald', sans-serif;
 
-    .addItemBtn {
-        font-size: 1.2rem;
-        font-weight: 300;
-        padding: 0.3 rem 2rem;
-    }
 }
 
 .btn {
@@ -20,6 +15,13 @@ button {
     color: white;
     border-radius: 1rem;
     transition: background-color 1s;
+    
+    .addItemBtn {
+        background-color: black;
+        font-size: 1.2rem;
+        font-weight: 300;
+        padding: 0.3 rem 2rem;
+    }
 }
 .btn:hover {
     background-color: $accentDarker;

@@ -87,6 +87,7 @@ function createAccordion(list) {
             <h3 class="doneTitle inListTitle">Klart</h3>
             <ul class="doneUl"></ul>
         </div>
+        <div class="testScroll"></div>
     </div>`
 
     listwrapper.append(accordionWrapper);
@@ -109,14 +110,15 @@ function createAccordion(list) {
     let accordionBody = accordionWrapper.querySelector(".accordionBody")
 
     toggleBtn.addEventListener("click", (event) => {
-        // accordionBody.classList.toggle("hide")
         event.target.classList.toggle("turn")
         if (accordionBody.style.maxHeight) {
             accordionBody.style.maxHeight = null;
         } else {
             accordionBody.style.maxHeight = accordionBody.scrollHeight + "px";
-            
-          }
+            accordionBody.scrollIntoView({ behavior: "smooth"})
+
+
+        }
     })
 
     return accordionWrapper;

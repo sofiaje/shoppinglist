@@ -3,6 +3,11 @@ button {
   color: black;
   font-family: "Oswald", sans-serif;
 }
+button .addItemBtn {
+  font-size: 1.2rem;
+  font-weight: 300;
+  padding: 0.3 rem 2rem;
+}
 
 .btn {
   padding: 0.5rem 1.5rem;
@@ -35,10 +40,6 @@ button {
   font-size: 1.2rem;
   font-weight: 200;
   align-self: center;
-}
-
-.addItemBtn {
-  font-size: 1.1rem;
 }
 
 .hiddenBtn {
@@ -93,7 +94,12 @@ button {
 }
 
 .addItemWrapper {
+  display: flex;
   padding: 1rem 1rem 0 1rem;
+  align-items: center;
+}
+.addItemWrapper input {
+  flex-grow: 1;
 }
 
 .solidListWrapper {
@@ -130,6 +136,10 @@ h1, h2, h3, h4, h5 {
   margin-bottom: 1rem;
   font-family: "Oswald", sans-serif;
   font-weight: 300;
+}
+
+h2 {
+  margin-top: 0.5rem;
 }
 
 .fa-xmark, .fa-chevron-down, .fa-trash-can {
@@ -185,7 +195,7 @@ body {
 input {
   padding: 0.5rem 1rem;
   border: 1px solid teal;
-  border-radius: 0.5rem;
+  border-radius: 1rem;
   margin: 0.5rem 0;
   margin-right: 0.5rem;
 }

@@ -5,6 +5,12 @@ button {
     cursor: pointer;
     color: black;
     font-family: 'Oswald', sans-serif;
+
+    .addItemBtn {
+        font-size: 1.2rem;
+        font-weight: 300;
+        padding: 0.3 rem 2rem;
+    }
 }
 
 .btn {
@@ -41,10 +47,6 @@ button {
     align-self: center;
 }
 
-.addItemBtn {
-    font-size: 1.1rem;
-
-}
 
 .hiddenBtn {
     padding: 0.5rem;

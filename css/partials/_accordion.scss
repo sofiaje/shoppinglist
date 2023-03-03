@@ -42,8 +42,12 @@
 }
 
 .addItemWrapper{
+    display: flex;
     padding: 1rem 1rem 0 1rem;
-
+    align-items: center;
+    input {
+        flex-grow: 1;
+    }
 }
 .solidListWrapper{
     padding: 0 1rem 1rem 1rem;

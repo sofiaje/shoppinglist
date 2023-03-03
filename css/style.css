@@ -15,8 +15,8 @@ button {
 .btn .addItemBtn {
   background-color: black;
   font-size: 1.2rem;
-  font-weight: 300;
-  padding: 0.3 rem 2rem;
+  font-weight: 100;
+  padding: 0 0;
 }
 
 .btn:hover {
@@ -123,8 +123,6 @@ ul {
 
 .liHtmlElement {
   display: flex;
-  font-size: 1.1rem;
-  font-weight: 100;
   justify-content: space-between;
   margin: 0.2rem;
 }
@@ -160,6 +158,11 @@ h2 {
 .inListTitle {
   font-weight: 100;
   border-bottom: 1px dashed rgb(202, 216, 216);
+}
+
+.liHtmlElement {
+  font-size: 1rem;
+  font-weight: 100;
 }
 
 .error {

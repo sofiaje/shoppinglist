@@ -21,6 +21,11 @@ h2 {
     border-bottom: 1px dashed $accentLighter;
 }
 
+.liHtmlElement {
+    font-size: 1rem;
+    font-weight: 100;
+}
+
 .error {
     color: $errorText;
     font-style: italic;

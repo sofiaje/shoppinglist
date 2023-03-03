@@ -1,12 +1,23 @@
+//body background
 $background: rgb(233, 233, 233);
-$accordionHead: rgb(255, 255, 255);
+
+//accordion
+$accordionHead: rgb(115, 156, 159);
 $accordionBody: rgb(255, 255, 255);
 
+$accordionHeading: rgb(255, 255, 255);
+$accordionText: gray;
+$errorText: red;
+
+//ljusa grå
 $gray-100: rgb(235, 235, 235);
 $gray-200: rgb(214, 214, 214);
 
+
+//accentfärger
 $accentLighter: rgb(202, 216, 216);
-$accentColor: teal;
+$accentColor: rgb(117, 152, 152);
 $accentDarker: rgb(0, 91, 91);
 
+//genomskinlig
 $invisible: rgb(0, 0, 0, 0);

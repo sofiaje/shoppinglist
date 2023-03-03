@@ -1,4 +1,28 @@
+
+h1,h2,h3,h4,h5 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-family: 'Courier New', Courier, monospace;
+}
+h2 {
+    font-weight: 500;
+}
+
+.fa-xmark, .fa-chevron-down, .fa-trash-can {
+    pointer-events: none;
+}
+.fa-solid, .fa-solid {
+    color: $accordionHeading;
+}
+
 .inListTitle {
     font-weight: 100;
     border-bottom: 1px dashed $accentLighter;
+}
+
+.error {
+    color: $errorText;
+    font-style: italic;
+    font-size: small;
 }

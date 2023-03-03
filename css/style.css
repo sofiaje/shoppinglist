@@ -51,6 +51,11 @@ button {
   transform: rotate(-180deg);
 }
 
+.hide {
+  max-height: 0;
+  overflow: hidden;
+}
+
 .accordionWrapper {
   background: rgb(255, 255, 255);
   margin: 1.5rem 0;
@@ -70,11 +75,21 @@ button {
 }
 
 .accordionBody {
-  padding: 1rem;
   background-color: rgb(255, 255, 255);
   color: rgb(105, 105, 105);
   font-weight: 100;
+  max-height: 0;
+  overflow: hidden;
   border-radius: 0 0 1rem 1rem;
+  transition: max-height 0.3s ease-out;
+}
+
+.addItemWrapper {
+  padding: 1rem 1rem 0 1rem;
+}
+
+.solidListWrapper {
+  padding: 0 1rem 1rem 1rem;
 }
 
 .btnWrapper {

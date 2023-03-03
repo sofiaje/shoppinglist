@@ -1,5 +1,9 @@
 @import "variables";
 
+.hide {
+    max-height: 0;
+    overflow: hidden;
+}
 
 .accordionWrapper{
     background: $accordionHead;
@@ -22,12 +26,21 @@
 }
 
 .accordionBody {
-    padding: 1rem;
     background-color: $accordionBody;
     color: rgb(105, 105, 105);
     font-weight: 100;
-    // border-top: 1px dashed $accentLighter;
+    max-height: 0;
+    overflow: hidden;
     border-radius: 0 0 1rem 1rem;
+    transition: max-height 0.3s ease-out;
+}
+
+.addItemWrapper{
+    padding: 1rem 1rem 0 1rem;
+
+}
+.solidListWrapper{
+    padding: 0 1rem 1rem 1rem;
 }
 
 .btnWrapper {

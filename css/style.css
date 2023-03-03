@@ -1,6 +1,7 @@
 button {
   cursor: pointer;
   color: black;
+  font-family: "Oswald", sans-serif;
 }
 
 .btn {
@@ -59,10 +60,15 @@ button {
 
 .accordionWrapper {
   background: rgb(115, 156, 159);
-  margin: 1.5rem 0.5rem;
+  margin: 1.5rem 0rem;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   max-width: 700px;
   border-radius: 1rem 1rem 1rem 1rem;
+}
+@media (width >= 380px) {
+  .accordionWrapper {
+    margin: 1.5rem 0.5rem;
+  }
 }
 
 .accordionHead {
@@ -122,12 +128,8 @@ ul {
 h1, h2, h3, h4, h5 {
   margin-top: 1rem;
   margin-bottom: 1rem;
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
-  font-family: "Courier New", Courier, monospace;
-}
-
-h2 {
-  font-weight: 500;
+  font-family: "Oswald", sans-serif;
+  font-weight: 300;
 }
 
 .fa-xmark, .fa-chevron-down, .fa-trash-can {

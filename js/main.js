@@ -1,7 +1,7 @@
 //------------------------------------global--------------------------------------------
 let listwrapper = document.querySelector("#listwrapper")
 
-
+let newListForm = document.getElementById("newListForm")
 let selectMenu = document.getElementById("lists")
 let newListInput = document.getElementById("newList")
 let newListBtn = document.getElementById("newListBtn")
@@ -76,10 +76,10 @@ function createAccordion(list) {
     </div>
 
     <div class="accordionBody">
-        <div class="addItemWrapper">
+        <form id="addItemForm" class="addItemWrapper">
             <input type="text" class="listInput">
             <button class="btn addItemBtn" id="${list._id}">Lägg till</button>
-        </div>
+        </form>
         <div class="solidListWrapper">
             <h3 class="inProgresstitle inListTitle">Kvar</h3>
             <ul class="inProgressUl">
@@ -177,7 +177,8 @@ async function findList(listId) {
 
 //kollar om användaren skrivit in ett listnamn när hen trycker på skapa-lista-knappen  
 //anropar isåfall funktion som skapar lista i API 
-newListBtn.addEventListener("click", () => {
+newListForm.addEventListener("submit", (e) => {
+    e.preventDefault()
     let newListInput = document.getElementById("newList")
     if (newListInput.value) {
         errorP.classList.add("hidden")
@@ -321,6 +322,8 @@ function eachItem(element, list, doneList) {
                 })
         } else {
             let trueorfalse = false;
+            // checkItemInAPI(listId, itemId, e.target.checked)
+            //kan lägga in ovnan ist för nedan?
             checkItemInAPI(listId, itemId, trueorfalse)
                 .then((data) => {
                     console.log("deletad lista ny", data)
@@ -382,10 +385,12 @@ async function deleteItem(listId, itemId) {
 
 function addNewItem(wrapper) {
     let addItemBtn = wrapper.querySelector(".addItemBtn");
-    let inProgressUl = wrapper.querySelector(".inProgressUl");
+let addItemForm = wrapper.querySelector("#addItemForm")
+
     // console.log(addItemBtn, inProgressUl)
 
-    addItemBtn.addEventListener("click", () => {
+    addItemForm.addEventListener("click", (e) => {
+        e.preventDefault()
         // console.log("du klickade på knappen");
         let listInput = wrapper.querySelector(".listInput");
 

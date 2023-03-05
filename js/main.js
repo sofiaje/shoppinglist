@@ -114,8 +114,10 @@ function createAccordion(list) {
         if (accordionBody.style.maxHeight) {
             accordionBody.style.maxHeight = null;
         } else {
-            accordionBody.style.maxHeight = accordionBody.scrollHeight + "px";
-            accordionBody.scrollIntoView({ behavior: "smooth"})
+            // accordionBody.style.maxHeight = accordionBody.scrollHeight + "px";
+            accordionBody.style.maxHeight = (accordionBody.scrollHeight + 500) + "px";
+
+            accordionBody.scrollIntoView({ behavior: "smooth" })
 
 
         }

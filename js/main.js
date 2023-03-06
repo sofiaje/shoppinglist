@@ -2,12 +2,13 @@
 let listwrapper = document.querySelector("#listwrapper")
 
 let newListForm = document.getElementById("newListForm")
-let selectMenu = document.getElementById("lists")
 let newListInput = document.getElementById("newList")
-let newListBtn = document.getElementById("newListBtn")
 
-let addItemDiv = document.getElementById("addItemDiv");
-let listDiv = document.getElementById("listDiv");
+// let selectMenu = document.getElementById("lists")
+// let newListBtn = document.getElementById("newListBtn")
+
+// let addItemDiv = document.getElementById("addItemDiv");
+// let listDiv = document.getElementById("listDiv");
 
 
 let errorP = document.querySelector(".error");
@@ -90,7 +91,7 @@ function createAccordion(list) {
         <div class="testScroll"></div>
     </div>`
 
-    listwrapper.append(accordionWrapper);
+    listwrapper.prepend(accordionWrapper);
 
     let trashBtn = accordionWrapper.querySelector(".trashBtn")
     trashBtn.addEventListener("click", (e) => {
@@ -161,7 +162,8 @@ async function removeListFromIdList(listId) {
 
 /* hur raderar jag ett listitem ur en lista om jag inte har dess id? 
 Kan jag få tillgång till dess id på något sätt? Utifrån namn eller ett annat id, 
-vet jag vilket index listan har? */
+vet jag vilket index listan har? 
+svar/idé: Jag får tillgång till item-id när jag lägger till id på id-listan*/
 
 async function findList(listId) {
     const res = await fetch(
@@ -179,7 +181,7 @@ async function findList(listId) {
 //anropar isåfall funktion som skapar lista i API 
 newListForm.addEventListener("submit", (e) => {
     e.preventDefault()
-    let newListInput = document.getElementById("newList")
+    let newListInput = document.getElementById("newListInput")
     if (newListInput.value) {
         errorP.classList.add("hidden")
         createNewList(newListInput.value);
@@ -239,6 +241,7 @@ async function saveNewList(listName, listId) {
         }
     );
     const { list } = await res.json();
+    console.log("uppdaterad lista, kanske ta sista id?", list.itemList.slice(-1)[0])
 }
 
 
@@ -385,7 +388,7 @@ async function deleteItem(listId, itemId) {
 
 function addNewItem(wrapper) {
     let addItemBtn = wrapper.querySelector(".addItemBtn");
-let addItemForm = wrapper.querySelector("#addItemForm")
+    let addItemForm = wrapper.querySelector("#addItemForm")
 
     // console.log(addItemBtn, inProgressUl)
 

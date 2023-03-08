@@ -20,11 +20,12 @@ progressList = document.getElementById("progressList");
 
 //------------------------------------fetch all lists from api -------------------------
 
+//hämtar id-listan
 async function getAllListsFromAPI() {
     const res = await fetch(`https://nackademin-item-tracker.herokuapp.com/lists/640077fe373f792f6370c015`);
     const data = await res.json();
 
-    console.log(data)
+    // console.log(data)
     return data;
 }
 
@@ -33,7 +34,7 @@ async function getAllListsFromAPI() {
 getAllListsFromAPI()
     .then((data) => {
         // console.log("data from api, id-list objectet", data)
-        // console.log("listArray, listan med id + namn", listArray)
+        // console.log("listArray, listan med id + namn", data)
         createtheaccordions(data)
 
     })
@@ -48,10 +49,10 @@ function createtheaccordions(data) {
         listwrapper.innerHTML = ""
         getSpecificListFromAPI(element.id)
             .then((data) => {
-                // console.log("rad 40", data)
-                let wrapper = createAccordion(data)
+                let wrapper = createAccordion(data, element._id)
                 displayItemsInAccordion(wrapper, data)
                 addNewItem(wrapper)
+
             })
     });
 }
@@ -62,7 +63,7 @@ function createtheaccordions(data) {
 //------------------------------------fetch lists and append accordion in browser -----------
 
 
-function createAccordion(list) {
+function createAccordion(list, listPlacement) {
     // console.log("element in accordion function", list);
     let accordionWrapper = document.createElement("div");
     accordionWrapper.setAttribute("id", list._id)
@@ -94,16 +95,16 @@ function createAccordion(list) {
     listwrapper.prepend(accordionWrapper);
 
     let trashBtn = accordionWrapper.querySelector(".trashBtn")
-    trashBtn.addEventListener("click", (e) => {
-        console.log("ta bort listan i api, sen i DOM")
+    trashBtn.addEventListener("click", async (e) => {
+        // console.log("ta bort listan i api, sen i DOM")
         let list = e.target.closest("div.accordionWrapper");
-        console.log(list)
-        console.log(list.id)
-        // removeListFromAPI(list.id)
-        // removeListFromIdList(list.id)
+        // console.log(listPlacement)
+        // console.log(list.id)
+        removeListFromIdList(listPlacement)
+        removeListFromAPI(list.id)
         // findList(list.id)
 
-        // list.remove();
+        list.remove();
     })
 
 
@@ -145,16 +146,16 @@ async function removeListFromAPI(listId) {
 
 //------------------------------------remove list-id from id-list----------------------------------------
 
-async function removeListFromIdList(listId) {
+async function removeListFromIdList(listPlacement) {
     console.log("tar bort item i lista")
     const res = await fetch(
-        `https://nackademin-item-tracker.herokuapp.com/lists/640077fe373f792f6370c015/items/${listId}`,
+        `https://nackademin-item-tracker.herokuapp.com/lists/640077fe373f792f6370c015/items/${listPlacement}`,
         {
             method: "DELETE",
         }
     );
     const { list } = await res.json();
-    console.log(list)
+    // console.log(list)
 }
 
 
@@ -170,7 +171,7 @@ async function findList(listId) {
         `https://nackademin-item-tracker.herokuapp.com//listsearch?listname=test`
     );
     const data = await res.json();
-    console.log("rad 155", data)
+    // console.log("rad 155", data)
 }
 
 
@@ -213,10 +214,10 @@ async function createNewList(newListInput) {
 
 
     //anropar funktion som sparar den nya listans ID i id-listan på API
-    saveNewList(list.listname, list._id)
+    let listPlacement = await saveNewList(list.listname, list._id)
 
     //renderar ut ny lista i browser
-    let wrapper = createAccordion(list)
+    let wrapper = createAccordion(list, listPlacement)
     displayItemsInAccordion(wrapper, list)
     addNewItem(wrapper)
 
@@ -241,7 +242,14 @@ async function saveNewList(listName, listId) {
         }
     );
     const { list } = await res.json();
-    console.log("uppdaterad lista, kanske ta sista id?", list.itemList.slice(-1)[0])
+    // console.log(list);
+    // console.log("uppdaterad lista, kanske ta sista item", list.itemList.slice(-1)[0])
+
+    //detta id ska vi spara någonstanns och koppla samman 
+    // console.log("uppdaterad lista, id på sista item", list.itemList.slice(-1)[0]._id)
+    // console.log("Id som vi skickade in i funktionen", listId)
+    let listPlacement = list.itemList.slice(-1)[0]._id
+    return listPlacement
 }
 
 
@@ -301,7 +309,7 @@ function eachItem(element, list, doneList) {
 
         deleteItem(listId, itemId)
             .then((data) => {
-                console.log("deletad lista ny", data)
+                // console.log("deletad lista ny", data)
                 displayItemsInAccordion(wrapper, data)
             })
     })
@@ -320,7 +328,7 @@ function eachItem(element, list, doneList) {
             let trueorfalse = true;
             checkItemInAPI(listId, itemId, e.target.checked)
                 .then((data) => {
-                    console.log("deletad lista ny", data)
+                    // console.log("deletad lista ny", data)
                     displayItemsInAccordion(wrapper, data)
                 })
         } else {
@@ -329,7 +337,7 @@ function eachItem(element, list, doneList) {
             //kan lägga in ovnan ist för nedan?
             checkItemInAPI(listId, itemId, trueorfalse)
                 .then((data) => {
-                    console.log("deletad lista ny", data)
+                    // console.log("deletad lista ny", data)
                     displayItemsInAccordion(wrapper, data)
                 })
 
@@ -402,7 +410,7 @@ function addNewItem(wrapper) {
             let title = listInput.value
             addItemInAPI(listId, title)
                 .then((data) => {
-                    console.log(data)
+                    // console.log(data)
                     displayItemsInAccordion(wrapper, data)
 
                 })
@@ -448,23 +456,3 @@ class listItem {
         this.qty = qty;
     }
 }
-
-
-
-
-
-// let itemListArray = []
-// const addItemBtn = document.querySelector(".addItemBtn")
-
-// addItemBtn.addEventListener("click", () => {
-//     let name = document.getElementById("itemName")
-//     let qty = document.getElementById("itemQty")
-
-//     let item = new listItem(name.value, qty.value)
-
-//     itemListArray.push(item)
-//     console.log(itemListArray)
-
-//     name.value = ""
-//     qty.value = ""
-// })

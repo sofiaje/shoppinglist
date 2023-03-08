@@ -147,7 +147,7 @@ async function removeListFromAPI(listId) {
 //------------------------------------remove list-id from id-list----------------------------------------
 
 async function removeListFromIdList(listPlacement) {
-    console.log("tar bort item i lista")
+    // console.log("tar bort item i lista")
     const res = await fetch(
         `https://nackademin-item-tracker.herokuapp.com/lists/640077fe373f792f6370c015/items/${listPlacement}`,
         {
